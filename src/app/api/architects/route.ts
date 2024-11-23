@@ -2,8 +2,33 @@ import { env } from '@/lib/env'
 import { loggerError, loggerInfo } from '@/lib/logger'
 import { notion } from '@/lib/notion'
 import { parseRequest } from '@/lib/utils'
-import { NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 import * as v from 'valibot'
+
+export async function GET(req: NextRequest) {
+  const name = req.nextUrl.searchParams.get('name')
+  if (name === null) {
+    return NextResponse.json({ message: 'Invalid query, requires `name`' }, { status: 400 })
+  }
+  const _response = await notion.databases.query({
+    database_id: env.ARCHITECT_DATABASE_ID,
+    filter: {
+      property: 'Name',
+      title: {
+        contains: name,
+      },
+    },
+  })
+  const results = _response.results
+    .map((result) => {
+      return {
+        id: result.id,
+        name: result.properties.Name.title[0].text.content,
+      }
+    })
+    .filter((result): result is { id: string; name: string } => result !== undefined)
+  return NextResponse.json(results, { status: 200 })
+}
 
 const BodySchema = v.object({
   name: v.string(),

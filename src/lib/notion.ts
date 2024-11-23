@@ -23,6 +23,10 @@ export async function createPage(
   )
 }
 
+export function toNotionURL(pageId: string) {
+  return `https://www.notion.so/${pageId.replace(/-/g, '')}`
+}
+
 export type EmojiRequest = Extract<
   Parameters<typeof notion.pages.create>[0]['icon'],
   { type?: 'emoji' }

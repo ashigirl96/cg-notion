@@ -17,36 +17,36 @@ export const ApiStatus = {
 } as const
 export type ApiStatus = (typeof ApiStatus)[keyof typeof ApiStatus]
 
-export function Ok<JsonBody>(
+export function Ok<JsonBody extends object>(
   body: JsonBody,
   logger: Logger,
   init?: ResponseInit,
 ): NextResponse<JsonBody> {
-  logger.info(JSON.stringify(body, null, 2), { status: ApiStatus.OK })
+  logger.info(body, { status: ApiStatus.OK })
   return NextResponse.json(body, {
     ...init,
     status: ApiStatus.OK,
   })
 }
 
-export function InternalServerError<JsonBody>(
+export function InternalServerError<JsonBody extends object>(
   body: JsonBody,
   logger: Logger,
   init?: ResponseInit,
 ): NextResponse<JsonBody> {
-  logger.info(JSON.stringify(body, null, 2), { status: ApiStatus.InternalServerError })
+  logger.info(body, { status: ApiStatus.InternalServerError })
   return NextResponse.json(body, {
     ...init,
     status: ApiStatus.InternalServerError,
   })
 }
 
-export function BadRequest<JsonBody>(
+export function BadRequest<JsonBody extends object>(
   body: JsonBody,
   logger: Logger,
   init?: ResponseInit,
 ): NextResponse<JsonBody> {
-  logger.info(JSON.stringify(body, null, 2), { status: ApiStatus.BadRequest })
+  logger.info(body, { status: ApiStatus.BadRequest })
   return NextResponse.json(body, {
     ...init,
     status: ApiStatus.BadGateway,

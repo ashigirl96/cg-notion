@@ -1,40 +1,37 @@
-// 最後に全容を載せておきます
-
 import type { ApiStatus } from '@/lib/api'
 import pino from 'pino'
+import pretty from 'pino-pretty'
 
-const pinoConfig = {
-  formatters: {
-    level: (label: string) => {
-      return {
-        level: label,
-      }
-    },
-  },
-  timestamp: pino.stdTimeFunctions.isoTime,
-  browser: {
-    asObject: true,
-  },
-}
-
-const logger = pino(pinoConfig)
+const stream = pretty({
+  colorize: true,
+  ignore: 'pid,hostname',
+  translateTime: 'SYS:standard',
+  singleLine: false,
+  levelFirst: true,
+  colorizeObjects: true,
+})
+const logger = pino(stream)
 
 export class Logger {
   constructor(private caller: string) {}
 
-  error(message: string, option: { status: ApiStatus }) {
-    logger.error({ caller: this.caller, ...option }, message)
+  error(message: object, option: { status: ApiStatus }) {
+    logger.error({ caller: this.caller, ...option }, this.formatJson(message))
   }
 
-  warn(message: string, option: { status: ApiStatus }) {
-    logger.error({ caller: this.caller, ...option }, message)
+  warn(message: object, option: { status: ApiStatus }) {
+    logger.warn({ caller: this.caller, ...option }, this.formatJson(message))
   }
 
-  info(message: string, option: { status: ApiStatus }) {
-    logger.error({ caller: this.caller, ...option }, message)
+  info(message: object, option: { status: ApiStatus }) {
+    logger.info({ caller: this.caller, ...option }, this.formatJson(message))
   }
 
-  debug(message: string, option: { status: ApiStatus }) {
-    logger.error({ caller: this.caller, ...option }, message)
+  debug(message: object, option: { status: ApiStatus }) {
+    logger.debug({ caller: this.caller, ...option }, this.formatJson(message))
+  }
+
+  private formatJson(message: object) {
+    return JSON.stringify(message, null, 2)
   }
 }

@@ -1,5 +1,5 @@
 import { env } from '@/lib/env'
-import { logger } from '@/lib/logger'
+import { loggerError, loggerInfo } from '@/lib/logger'
 import { notion } from '@/lib/notion'
 import { parseRequest } from '@/lib/utils'
 import { NextResponse } from 'next/server'
@@ -30,11 +30,17 @@ export async function POST(req: Request) {
       },
     })
     .then((response) => {
-      logger.info(`Created a page: ${JSON.stringify(response)}`)
+      loggerInfo(`Created a page: ${JSON.stringify(response)}`, {
+        status: 200,
+        caller: 'POST /api/daily',
+      })
       return NextResponse.json({ message: 'POST method called', data })
     })
     .catch((error) => {
-      logger.error(`Failed to create a page: ${error}`)
+      loggerError(`Failed to create a page: ${error}`, {
+        status: 500,
+        caller: 'POST /api/daily',
+      })
       return NextResponse.json({ message: `Failed to create a page ${error}` }, { status: 500 })
     })
 }

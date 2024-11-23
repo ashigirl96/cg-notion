@@ -7,7 +7,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export async function parseRequest<T extends ObjectSchema<any, any>>(req: Request, schema: T) {
   const body = await req.json()
   return v.safeParse(schema, body) as v.SafeParseResult<T>

@@ -21,20 +21,20 @@ const pinoConfig = {
   },
 }
 
-export const logger = pino(pinoConfig)
+const logger = pino(pinoConfig)
 
-// export const loggerError = (message: string, option: Option) => {
-//   return logger.error(option, message);
-// };
-//
-// export const loggerWarn = (message: string, option: Option) => {
-//   return logger.warn(option, message);
-// };
-//
-// export const loggerInfo = (message: string, option: Option) => {
-//   return logger.info(option , message);
-// };
-//
-// export const loggerDebug = (message: string, option: Option) => {
-//   return logger.debug(option, message);
-// };
+export const loggerError = (message: string, option: Option) => {
+  return logger.error(option, message)
+}
+
+export const loggerWarn = (message: string, option: Option) => {
+  return logger.warn(option, message)
+}
+
+export const loggerInfo = (message: string, option: Option) => {
+  return logger.info(option, message)
+}
+
+export const loggerDebug = (message: string, option: Option) => {
+  return logger.debug(option, message)
+}

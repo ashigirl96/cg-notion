@@ -138,8 +138,10 @@ components:
           description: 建築家の概要
           properties:
             description:
-              type: string
-              description: 500文字程度の概要
+              type: array
+              items:
+                type: string
+                description: 500文字程度の概要
           required:
             - description
         works:
@@ -171,8 +173,10 @@ components:
               - description
               - url
         philosophy:
-          type: string
+          type: array
           description: 建築哲学や特徴
+          items:
+            type: string
         externalLinks:
           type: array
           description: 外部リンクのリスト

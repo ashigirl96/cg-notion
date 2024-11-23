@@ -1,18 +1,8 @@
-import { findByName } from '@/app/api/architects/find-by-name'
-import { save } from '@/app/api/architects/save'
-import { BodySchema } from '@/app/api/architects/schema'
+import { save } from '@/app/api/words/save'
+import { BodySchema } from '@/app/api/words/schema'
 import { loggerError, loggerInfo } from '@/lib/logger'
 import { parseRequest } from '@/lib/utils'
-import { type NextRequest, NextResponse } from 'next/server'
-
-export async function GET(req: NextRequest) {
-  const name = req.nextUrl.searchParams.get('name')
-  if (name === null) {
-    return NextResponse.json({ message: 'Invalid query, requires `name`' }, { status: 400 })
-  }
-  const results = await findByName(name)
-  return NextResponse.json(results, { status: 200 })
-}
+import { NextResponse } from 'next/server'
 
 export async function POST(req: Request) {
   const data = await parseRequest(req, BodySchema)
@@ -23,7 +13,7 @@ export async function POST(req: Request) {
     .then((response) => {
       loggerInfo(`Created a page: ${JSON.stringify(response)}`, {
         status: 200,
-        caller: 'POST /api/architects',
+        caller: 'POST /api/words',
       })
       if ('url' in response) {
         return NextResponse.json({ url: response.url }, { status: 200 })
@@ -33,7 +23,7 @@ export async function POST(req: Request) {
     .catch((error) => {
       loggerError(`Failed to create a page: ${error}`, {
         status: 500,
-        caller: 'POST /api/architects',
+        caller: 'POST /api/words',
       })
       return NextResponse.json({ message: `Failed to create a page ${error}` }, { status: 500 })
     })

@@ -17,7 +17,7 @@ export function middleware(request: NextRequest) {
     response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization')
     return response
   }
-  return new NextResponse('CORS policy does not allow access from your origin.', { status: 403 })
+  return new NextResponse(`CORS policy does not allow access from ${origin}.`, { status: 403 })
 }
 
 export const config = {

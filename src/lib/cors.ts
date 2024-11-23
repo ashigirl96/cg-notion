@@ -6,6 +6,15 @@
 
 type StaticOrigin = boolean | string | RegExp | (boolean | string | RegExp)[];
 
+// CorsOptions: 設定可能なCORSオプション。
+// origin: 許可するオリジン（固定値、動的判定、正規表現など）。
+// methods: 許可するHTTPメソッド。
+// allowedHeaders: 許可するカスタムヘッダー。
+// exposedHeaders: クライアントに公開するレスポンスヘッダー。
+// credentials: 認証情報（クッキーなど）を許可するかどうか。
+// maxAge: プリフライトリクエストのキャッシュ期間。
+// preflightContinue: プリフライトリクエストのレスポンス後、次のミドルウェアに進むか。
+// optionsSuccessStatus: プリフライトリクエストに成功した場合のステータスコード。
 type OriginFn = (
   origin: string | undefined,
   req: Request,

@@ -15,6 +15,7 @@ export const ApiStatus = {
   BadGateway: 502,
   ServiceUnavailable: 503,
 } as const
+export type ApiStatus = (typeof ApiStatus)[keyof typeof ApiStatus]
 
 export function Ok<JsonBody>(
   body: JsonBody,

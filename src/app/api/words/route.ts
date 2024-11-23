@@ -12,10 +12,8 @@ export async function POST(req: Request) {
   }
   return await save(data.data)
     .then((response) => {
-      if ('url' in response) {
-        return Ok({ url: response.url }, logger)
-      }
-      return Ok({ message: 'success' }, logger)
+      // @ts-expect-error
+      return Ok({ url: response.url }, logger)
     })
     .catch((error) => {
       return InternalServerError({ message: `Failed to create a page ${error}` }, logger)

@@ -3,11 +3,6 @@
 import type { ApiStatus } from '@/lib/api'
 import pino from 'pino'
 
-type Option = {
-  caller: string
-  status: number
-}
-
 const pinoConfig = {
   formatters: {
     level: (label: string) => {

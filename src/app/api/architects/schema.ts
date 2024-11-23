@@ -7,7 +7,7 @@ export const BodySchema = z.object({
     en: z.string().describe('英語表記名'),
   }),
   overview: z.object({
-    description: z.string().describe('500文字程度の概要'),
+    description: z.array(z.string().describe('500文字程度の概要')),
   }),
   works: z.array(
     z.object({
@@ -18,7 +18,7 @@ export const BodySchema = z.object({
       url: z.string().describe('建築物画像のURL'),
     }),
   ),
-  philosophy: z.string().describe('建築哲学や特徴'),
+  philosophy: z.array(z.string()).describe('建築哲学や特徴'),
   externalLinks: z.array(
     z.object({ title: z.string().describe('リンク名'), url: z.string().describe('リンクURL') }),
   ),

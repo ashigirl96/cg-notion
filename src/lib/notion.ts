@@ -22,3 +22,8 @@ export async function createPage(
     (error) => error,
   )
 }
+
+export type EmojiRequest = Extract<
+  Parameters<typeof notion.pages.create>[0]['icon'],
+  { type?: 'emoji' }
+>['emoji']

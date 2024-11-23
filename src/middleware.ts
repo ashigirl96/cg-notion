@@ -1,9 +1,14 @@
+import { env } from '@/lib/env'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 const allowedOrigins = ['https://chatgpt.com']
 
 export function middleware(request: NextRequest) {
+  const notionToken = request.headers.get('X-NOTION-TOKEN')
+  if (notionToken === null || notionToken !== env.NOTION_TOKEN) {
+    return new NextResponse('Unauthorized: Invalid API Key', { status: 401 })
+  }
   const origin = request.headers.get('origin')
   if (origin && allowedOrigins.includes(origin)) {
     const response = NextResponse.next()

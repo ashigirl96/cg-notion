@@ -1,27 +1,27 @@
 // 最後に全容を載せておきます
 
-import pino from "pino";
+import pino from 'pino'
 
 type Option = {
-  caller: string;
-  status: number;
-};
+  caller: string
+  status: number
+}
 
 const pinoConfig = {
   formatters: {
     level: (label: string) => {
       return {
         level: label,
-      };
+      }
     },
   },
   timestamp: pino.stdTimeFunctions.isoTime,
   browser: {
     asObject: true,
   },
-};
+}
 
-export const logger = pino(pinoConfig);
+export const logger = pino(pinoConfig)
 
 // export const loggerError = (message: string, option: Option) => {
 //   return logger.error(option, message);

@@ -40,3 +40,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 - [Next.jsの考え方](https://zenn.dev/akfm/books/nextjs-basic-principle/viewer/intro)
 - [Example page for notion-sdk-js-helper](https://sota1235.notion.site/Example-page-for-notion-sdk-js-helper-4176d72d760c40979a6a6523fa2c1165)
+- [valibot](https://zenn.dev/uttk/articles/introduce-valibot)

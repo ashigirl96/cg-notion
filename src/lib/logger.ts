@@ -1,5 +1,6 @@
 // 最後に全容を載せておきます
 
+import type { ApiStatus } from '@/lib/api'
 import pino from 'pino'
 
 type Option = {
@@ -23,18 +24,22 @@ const pinoConfig = {
 
 const logger = pino(pinoConfig)
 
-export const loggerError = (message: string, option: Option) => {
-  return logger.error(option, message)
-}
+export class Logger {
+  constructor(private caller: string) {}
 
-export const loggerWarn = (message: string, option: Option) => {
-  return logger.warn(option, message)
-}
+  error(message: string, option: { status: ApiStatus }) {
+    logger.error({ caller: this.caller, ...option }, message)
+  }
 
-export const loggerInfo = (message: string, option: Option) => {
-  return logger.info(option, message)
-}
+  warn(message: string, option: { status: ApiStatus }) {
+    logger.error({ caller: this.caller, ...option }, message)
+  }
 
-export const loggerDebug = (message: string, option: Option) => {
-  return logger.debug(option, message)
+  info(message: string, option: { status: ApiStatus }) {
+    logger.error({ caller: this.caller, ...option }, message)
+  }
+
+  debug(message: string, option: { status: ApiStatus }) {
+    logger.error({ caller: this.caller, ...option }, message)
+  }
 }

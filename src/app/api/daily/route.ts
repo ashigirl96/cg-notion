@@ -1,17 +1,18 @@
+import { BadRequest, InternalServerError, Ok } from '@/lib/api'
 import { env } from '@/lib/env'
-import { loggerError, loggerInfo } from '@/lib/logger'
+import { Logger } from '@/lib/logger'
 import { notion } from '@/lib/notion'
 import { parseRequest } from '@/lib/utils'
-import { NextResponse } from 'next/server'
 import z from 'zod'
 
 const BodySchema = z.object({
   name: z.string(),
 })
 export async function POST(req: Request) {
+  const logger = new Logger('POST /api/daily')
   const data = await parseRequest(req, BodySchema)
   if (!data.success) {
-    return NextResponse.json(data.error.errors, { status: 400 })
+    return BadRequest(data.error.format(), logger)
   }
   const { name } = data.data
   const isGoodDay = name.includes('良')
@@ -43,20 +44,11 @@ export async function POST(req: Request) {
       },
     })
     .then((response) => {
-      loggerInfo(`Created a page: ${JSON.stringify(response)}`, {
-        status: 200,
-        caller: 'POST /api/daily',
-      })
       if ('url' in response) {
-        return NextResponse.json({ url: response.url }, { status: 200 })
+        return Ok({ url: response.url }, logger)
       }
-      return NextResponse.json({ message: 'success' }, { status: 200 })
     })
     .catch((error) => {
-      loggerError(`Failed to create a page: ${error}`, {
-        status: 500,
-        caller: 'POST /api/daily',
-      })
-      return NextResponse.json({ message: `Failed to create a page ${error}` }, { status: 500 })
+      return InternalServerError({ message: `Failed to create a page ${error}` }, logger)
     })
 }

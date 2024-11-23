@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: CG Notion API
-  description: API for managing architects and daily entries in the Notion system.
+  description: API for managing architects, words, and daily entries in the Notion system.
   version: 1.0.0
 servers:
   - url: https://cg-notion.vercel.app
@@ -35,30 +35,6 @@ paths:
       security:
         - notionAuth: []
   /api/architects:
-    get:
-      operationId: getArchitectsByName
-      summary: Retrieves architect data by name.
-      description: >
-        This endpoint retrieves data about architects by their name.
-        Requires a `name` query parameter.
-      parameters:
-        - name: name
-          in: query
-          required: true
-          schema:
-            type: string
-            description: The name of the architect to search for.
-      responses:
-        '200':
-          description: Data retrieved successfully.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ArchitectSummary'
-        '400':
-          description: Bad Request - Missing or invalid query parameter.
     post:
       operationId: createArchitect
       summary: Creates a new architect entry in the Notion system.
@@ -82,6 +58,34 @@ paths:
                   url:
                     type: string
                     description: The URL of the created architect entry in Notion.
+        '400':
+          description: Bad Request - Invalid input data.
+        '500':
+          description: Internal Server Error - Failed to create a page in Notion.
+  /api/words:
+    post:
+      operationId: createWord
+      summary: Creates a new word entry in the Notion system.
+      description: >
+        This endpoint allows users to create a new word entry by providing
+        fields such as `emoji`, `name`, `pronunciation`, `definition`, `example`, and `type`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WordRequest'
+      responses:
+        '200':
+          description: Word entry created successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    description: The URL of the created word entry in Notion.
         '400':
           description: Bad Request - Invalid input data.
         '500':
@@ -135,7 +139,7 @@ components:
           properties:
             description:
               type: string
-              description: 1000文字程度の概要
+              description: 500文字程度の概要
           required:
             - description
         works:
@@ -156,7 +160,7 @@ components:
                 description: 所在地
               description:
                 type: string
-                description: 建築物の説明を100文字程度
+                description: 建築物の説明
               url:
                 type: string
                 description: 建築物画像のURL
@@ -168,7 +172,7 @@ components:
               - url
         philosophy:
           type: string
-          description: 建築哲学や特徴を1000文字程度
+          description: 建築哲学や特徴
         externalLinks:
           type: array
           description: 外部リンクのリスト
@@ -191,12 +195,45 @@ components:
         - works
         - philosophy
         - externalLinks
-    ArchitectSummary:
+    WordRequest:
       type: object
       properties:
-        id:
+        emoji:
           type: string
-          description: The unique identifier of the architect.
+          description: 文字のイメージに合う絵文字
         name:
           type: string
-          description: The name of the architect.
+          description: 日本語表記名
+        pronunciation:
+          type: string
+          description: 読み方
+        def:
+          type: string
+          description: 定義
+        example:
+          type: string
+          description: 例文
+        type:
+          type: string
+          enum:
+            - 建築
+            - 慣用句
+            - ビジネス
+            - 技術
+            - 哲学
+            - その他
+            - 食べ物
+            - 科学
+            - 心理学
+            - 仮想通貨
+            - 金融工学
+            - 芸術
+            - 旅
+          description: カテゴリー
+      required:
+        - emoji
+        - name
+        - pronunciation
+        - def
+        - example
+        - type

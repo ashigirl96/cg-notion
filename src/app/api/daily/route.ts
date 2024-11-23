@@ -28,9 +28,11 @@ export async function POST(req: Request) {
           ],
         },
         Categories: {
-          select: {
-            name: '一言',
-          },
+          multi_select: [
+            {
+              name: '一言',
+            },
+          ],
         },
       },
     })

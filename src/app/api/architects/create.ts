@@ -9,7 +9,7 @@ import {
 } from '@sota1235/notion-sdk-js-helper/dist/blockObjects'
 import { richText } from '@sota1235/notion-sdk-js-helper/dist/richTextObject'
 
-export async function save({ emoji, name, overview, philosophy, works, externalLinks }: Body) {
+export async function create({ emoji, name, overview, philosophy, works, externalLinks }: Body) {
   return await notion.pages.create({
     parent: { database_id: env.ARCHITECT_DATABASE_ID },
     icon: {

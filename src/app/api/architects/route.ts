@@ -1,5 +1,5 @@
+import { create } from '@/app/api/architects/create'
 import { findByName } from '@/app/api/architects/find-by-name'
-import { save } from '@/app/api/architects/save'
 import { BodySchema } from '@/app/api/architects/schema'
 import { BadRequest, InternalServerError, Ok } from '@/lib/api'
 import { Logger } from '@/lib/logger'
@@ -22,7 +22,7 @@ export async function POST(req: Request) {
   if (!data.success) {
     return BadRequest(data.error.format(), logger)
   }
-  return await save(data.data)
+  return await create(data.data)
     .then((response) => {
       // @ts-expect-error
       return Ok({ url: response.url }, logger)

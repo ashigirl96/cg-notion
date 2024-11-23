@@ -1,13 +1,12 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import * as v from 'valibot'
-import type { ObjectSchema } from 'valibot'
+import type z from 'zod'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export async function parseRequest<T extends ObjectSchema<any, any>>(req: Request, schema: T) {
+export async function parseRequest<T extends z.ZodObject<any>>(req: Request, schema: T) {
   const body = await req.json()
-  return v.safeParse(schema, body) as v.SafeParseResult<T>
+  return schema.safeParse(body) as z.SafeParseReturnType<z.output<T>, z.output<T>>
 }

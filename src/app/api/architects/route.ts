@@ -12,7 +12,7 @@ import {
 } from '@sota1235/notion-sdk-js-helper/dist/blockObjects'
 import { richText } from '@sota1235/notion-sdk-js-helper/dist/richTextObject'
 import { type NextRequest, NextResponse } from 'next/server'
-import * as v from 'valibot'
+import z from 'zod'
 
 export async function GET(req: NextRequest) {
   const name = req.nextUrl.searchParams.get('name')
@@ -23,33 +23,35 @@ export async function GET(req: NextRequest) {
   return NextResponse.json(results, { status: 200 })
 }
 
-const BodySchema = v.object({
-  name: v.object({
-    jp: v.string(), // 日本語表記名
-    en: v.string(), // 英語表記名
+const BodySchema = z.object({
+  name: z.object({
+    jp: z.string().describe('日本語表記名'),
+    en: z.string().describe('英語表記名'),
   }),
-  overview: v.object({
-    description: v.string(), // 概要
-    imageUrl: v.string(), // 画像URL
+  overview: z.object({
+    description: z.string().describe('500文字程度の概要'),
+    imageUrl: z.string().describe('建築家画像のURL'),
   }),
-  works: v.array(
-    v.object({
-      title: v.string(), // 建築名
-      createdAt: v.number(), // 施工年月
-      location: v.string(), // 所在地
-      description: v.string(), // 説明
-      imageUrl: v.string(), // 画像URL
+  works: z.array(
+    z.object({
+      title: z.string().describe('建築名'),
+      createdAt: z.number().describe('施工年月'),
+      location: z.string().describe('所在地'),
+      description: z.string().describe('建築物の説明'),
+      imageUrl: z.string().describe('建築物画像のURL'),
     }),
   ),
-  philosophy: v.string(), // 建築哲学や特徴
-  externalLinks: v.array(v.object({ title: v.string(), url: v.string() })),
+  philosophy: z.string().describe('建築哲学や特徴'),
+  externalLinks: z.array(
+    z.object({ title: z.string().describe('リンク名'), url: z.string().describe('リンクURL') }),
+  ),
 })
 export async function POST(req: Request) {
   const data = await parseRequest(req, BodySchema)
   if (!data.success) {
-    return NextResponse.json(data.output, { status: 400 })
+    return NextResponse.json(data.error.format(), { status: 400 })
   }
-  const { name, overview, works, philosophy, externalLinks } = data.output
+  const { name, overview, works, philosophy, externalLinks } = data.data
   return await notion.pages
     .create({
       parent: { database_id: env.ARCHITECT_DATABASE_ID },

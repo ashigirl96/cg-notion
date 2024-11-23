@@ -3,17 +3,17 @@ import { loggerError, loggerInfo } from '@/lib/logger'
 import { notion } from '@/lib/notion'
 import { parseRequest } from '@/lib/utils'
 import { NextResponse } from 'next/server'
-import * as v from 'valibot'
+import z from 'zod'
 
-const BodySchema = v.object({
-  name: v.string(),
+const BodySchema = z.object({
+  name: z.string(),
 })
 export async function POST(req: Request) {
   const data = await parseRequest(req, BodySchema)
   if (!data.success) {
-    return NextResponse.json({ message: 'Invalid body' }, { status: 400 })
+    return NextResponse.json(data.error.errors, { status: 400 })
   }
-  const { name } = data.output
+  const { name } = data.data
   return await notion.pages
     .create({
       parent: { database_id: env.DAILY_DATABASE_ID },

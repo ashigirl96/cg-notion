@@ -4,7 +4,9 @@ import { loggerError, loggerInfo } from '@/lib/logger'
 import { notion } from '@/lib/notion'
 import { parseRequest } from '@/lib/utils'
 import {
+  bulletedListItem,
   heading2,
+  image,
   numberedListItem,
   paragraph,
 } from '@sota1235/notion-sdk-js-helper/dist/blockObjects'
@@ -22,16 +24,30 @@ export async function GET(req: NextRequest) {
 }
 
 const BodySchema = v.object({
-  name: v.string(),
-  overview: v.string(),
-  works: v.array(v.string()),
-  philosophy: v.string(),
+  name: v.object({
+    jp: v.string(), // 日本語表記名
+    en: v.string(), // 英語表記名
+  }),
+  overview: v.object({
+    description: v.string(), // 概要
+    imageUrl: v.string(), // 画像URL
+  }),
+  works: v.array(
+    v.object({
+      title: v.string(), // 建築名
+      createdAt: v.number(), // 施工年月
+      location: v.string(), // 所在地
+      description: v.string(), // 説明
+      imageUrl: v.string(), // 画像URL
+    }),
+  ),
+  philosophy: v.string(), // 建築哲学や特徴
   externalLinks: v.array(v.object({ title: v.string(), url: v.string() })),
 })
 export async function POST(req: Request) {
   const data = await parseRequest(req, BodySchema)
   if (!data.success) {
-    return NextResponse.json(data.issues, { status: 400 })
+    return NextResponse.json(data.output, { status: 400 })
   }
   const { name, overview, works, philosophy, externalLinks } = data.output
   return await notion.pages
@@ -42,7 +58,7 @@ export async function POST(req: Request) {
           title: [
             {
               text: {
-                content: name,
+                content: `${name.jp}(${name.en})`,
               },
             },
           ],
@@ -50,9 +66,19 @@ export async function POST(req: Request) {
       },
       children: [
         heading2('概要'),
-        paragraph(overview),
+        image(overview.imageUrl),
+        paragraph(overview.description),
         heading2('代表作'),
-        ...works.map((work) => numberedListItem(work)),
+        ...works.map((_work) =>
+          numberedListItem(_work.title, {
+            children: [
+              image(_work.imageUrl),
+              bulletedListItem(_work.description),
+              bulletedListItem(`施工年月: ${_work.createdAt}`),
+              bulletedListItem(`所在地: ${_work.location}`),
+            ],
+          }),
+        ),
         heading2('建築哲学や特徴'),
         paragraph(philosophy),
         heading2('外部リンク'),

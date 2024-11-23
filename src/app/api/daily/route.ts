@@ -14,6 +14,7 @@ export async function POST(req: Request) {
     return NextResponse.json(data.error.errors, { status: 400 })
   }
   const { name } = data.data
+  const isGoodDay = name.includes('良')
   return await notion.pages
     .create({
       parent: { database_id: env.DAILY_DATABASE_ID },
@@ -32,7 +33,12 @@ export async function POST(req: Request) {
             {
               name: '一言',
             },
-          ],
+            isGoodDay
+              ? {
+                  name: 'Good Day',
+                }
+              : null,
+          ].filter((item): item is { name: string } => item !== null),
         },
       },
     })

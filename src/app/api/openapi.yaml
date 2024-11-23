@@ -1,0 +1,202 @@
+openapi: 3.1.0
+info:
+  title: CG Notion API
+  description: API for managing architects and daily entries in the Notion system.
+  version: 1.0.0
+servers:
+  - url: https://cg-notion.vercel.app
+    description: Production server
+paths:
+  /api/daily:
+    post:
+      operationId: createDailyEntry
+      summary: Creates a daily entry in the Notion system.
+      description: >
+        This endpoint allows users to create a daily entry in the Notion system 
+        by providing a `name` field in the request body. 
+        Requires an `X-NOTION-TOKEN` header for authentication and an `Origin` header.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DailyEntryRequest'
+      responses:
+        '200':
+          description: Entry created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DailyEntryResponse'
+        '400':
+          description: Bad Request - Invalid input data.
+        '401':
+          description: Unauthorized - Missing or invalid `X-NOTION-TOKEN`.
+      security:
+        - notionAuth: []
+  /api/architects:
+    get:
+      operationId: getArchitectsByName
+      summary: Retrieves architect data by name.
+      description: >
+        This endpoint retrieves data about architects by their name.
+        Requires a `name` query parameter.
+      parameters:
+        - name: name
+          in: query
+          required: true
+          schema:
+            type: string
+            description: The name of the architect to search for.
+      responses:
+        '200':
+          description: Data retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArchitectSummary'
+        '400':
+          description: Bad Request - Missing or invalid query parameter.
+    post:
+      operationId: createArchitect
+      summary: Creates a new architect entry in the Notion system.
+      description: >
+        This endpoint allows users to create a new architect entry by providing
+        required fields such as `emoji`, `name`, `overview`, `works`, `philosophy`, and `externalLinks`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArchitectRequest'
+      responses:
+        '200':
+          description: Architect entry created successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    description: The URL of the created architect entry in Notion.
+        '400':
+          description: Bad Request - Invalid input data.
+        '500':
+          description: Internal Server Error - Failed to create a page in Notion.
+components:
+  securitySchemes:
+    notionAuth:
+      type: apiKey
+      in: header
+      name: X-NOTION-TOKEN
+  schemas:
+    DailyEntryRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the daily entry.
+      required:
+        - name
+    DailyEntryResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indicates if the entry was created successfully.
+        url:
+          type: string
+          description: The URL of the created entry.
+    ArchitectRequest:
+      type: object
+      properties:
+        emoji:
+          type: string
+          description: 建築家のイメージに合う絵文字
+        name:
+          type: object
+          description: 建築家の名前
+          properties:
+            jp:
+              type: string
+              description: 日本語表記名
+            en:
+              type: string
+              description: 英語表記名
+          required:
+            - jp
+            - en
+        overview:
+          type: object
+          description: 建築家の概要
+          properties:
+            description:
+              type: string
+              description: 1000文字程度の概要
+          required:
+            - description
+        works:
+          type: array
+          description: 建築家の代表作のリスト
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+                description: 建築名
+              createdAt:
+                type: number
+                format: int64
+                description: 施工年月
+              location:
+                type: string
+                description: 所在地
+              description:
+                type: string
+                description: 建築物の説明を100文字程度
+              url:
+                type: string
+                description: 建築物画像のURL
+            required:
+              - title
+              - createdAt
+              - location
+              - description
+              - url
+        philosophy:
+          type: string
+          description: 建築哲学や特徴を1000文字程度
+        externalLinks:
+          type: array
+          description: 外部リンクのリスト
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+                description: リンク名
+              url:
+                type: string
+                description: リンクURL
+            required:
+              - title
+              - url
+      required:
+        - emoji
+        - name
+        - overview
+        - works
+        - philosophy
+        - externalLinks
+    ArchitectSummary:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the architect.
+        name:
+          type: string
+          description: The name of the architect.

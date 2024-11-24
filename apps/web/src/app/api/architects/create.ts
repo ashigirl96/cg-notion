@@ -1,3 +1,5 @@
+import { env } from '@/lib/env'
+import { type EmojiRequest, notion } from '@/lib/notion'
 import {
   bulletedListItem,
   heading2,
@@ -5,8 +7,6 @@ import {
   paragraph,
 } from '@sota1235/notion-sdk-js-helper/dist/blockObjects'
 import { richText } from '@sota1235/notion-sdk-js-helper/dist/richTextObject'
-import { env } from '../../../lib/env'
-import { type EmojiRequest, notion } from '../../../lib/notion'
 import type { Body } from './schema'
 
 export async function create({ emoji, name, overview, philosophy, works, externalLinks }: Body) {

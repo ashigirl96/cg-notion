@@ -5,6 +5,5 @@
     "moduleResolution": "node",
     "resolveJsonModule": true
   },
-  "include": [
-    "vite.config.mts", "manifest.config.ts", "package.json"]
+  "include": ["vite.config.mts", "manifest.config.ts", "package.json"]
 }

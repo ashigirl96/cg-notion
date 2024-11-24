@@ -12,11 +12,4 @@ export default defineConfig({
       "@": resolve(__dirname, "./"),
     },
   },
-  build: {
-    rollupOptions: {
-      input: {
-        hello: resolve(__dirname, "./scripts/hello.ts"), // 追加
-      },
-    },
-  },
 });

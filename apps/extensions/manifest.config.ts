@@ -9,7 +9,7 @@ export default defineManifest(async (_env) => ({
   content_scripts: [
     {
       matches: ['https://chatgpt.com/*'],
-      js: ['scripts/hello.ts'],
+      js: ['scripts/index.ts'],
     },
   ],
   background: {

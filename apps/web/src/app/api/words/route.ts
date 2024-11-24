@@ -1,6 +1,6 @@
-import { BadRequest, InternalServerError, Ok } from '../../../lib/api'
-import { Logger } from '../../../lib/logger'
-import { parseRequest } from '../../../lib/utils'
+import { BadRequest, InternalServerError, Ok } from '@/lib/api'
+import { Logger } from '@/lib/logger'
+import { parseRequest } from '@/lib/utils'
 import { save } from './save'
 import { BodySchema } from './schema'
 

@@ -33,6 +33,7 @@ export async function create({ emoji, name, overview, philosophy, works, externa
     },
     children: [
       heading2('概要'),
+      ...overview.description.map((description) => bulletedListItem(description)),
       paragraph(overview.description),
       heading2('代表作'),
       ...works.map((_work) =>
@@ -45,7 +46,7 @@ export async function create({ emoji, name, overview, philosophy, works, externa
         }),
       ),
       heading2('建築哲学や特徴'),
-      paragraph(philosophy),
+      ...philosophy.map((item) => bulletedListItem(item)),
       heading2('外部リンク'),
       ...externalLinks.map((link, _index) => numberedListItem(richText(link.title, {}, link.url))),
     ],

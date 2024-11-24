@@ -137,12 +137,18 @@ components:
           type: object
           description: 建築家の概要
           properties:
+            imageUrls:
+              type: array
+              items:
+                type: string
+                description: 建築家や建築の画像URL
             description:
               type: array
               items:
                 type: string
                 description: 500文字程度の概要
           required:
+            - imageUrls
             - description
         works:
           type: array

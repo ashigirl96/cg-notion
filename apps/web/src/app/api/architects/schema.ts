@@ -7,6 +7,7 @@ export const BodySchema = z.object({
     en: z.string().describe('英語表記名'),
   }),
   overview: z.object({
+    imageUrls: z.array(z.string().describe('建築家や建築の画像URL')),
     description: z.array(z.string().describe('500文字程度の概要')),
   }),
   works: z.array(

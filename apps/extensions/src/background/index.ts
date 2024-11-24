@@ -17,6 +17,7 @@ type Status = 'pending'
 const _registry = new Map<TabId, Status>()
 function onBeforeRequest(details: chrome.webRequest.WebRequestDetails) {
   if (details.url === 'https://chatgpt.com/backend-api/conversation') {
+    // @ts-expect-error
     const rawData = details.requestBody.raw[0].bytes
     const decoder = new TextDecoder('utf-8')
     const requestBody: ChatGPTResponse = JSON.parse(decoder.decode(rawData))

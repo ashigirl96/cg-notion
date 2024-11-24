@@ -50,17 +50,38 @@ if (document.readyState === 'loading') {
   waitForElement()
 }
 
-// function onMessage() {
-//
-// }
+// sleep関数
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
 function onMessage(
   message: Action,
   _sender: chrome.runtime.MessageSender,
   sendResponse: (response: Action) => void,
 ) {
   if (message.action === 'RETRY') {
-    console.log("🔥 'RETRY'メッセージを受信しました。")
-    sendResponse({ action: 'DONE' })
+    ;(async () => {
+      const editableDiv: HTMLDivElement | null = document.querySelector(
+        'div[contenteditable="true"].ProseMirror',
+      )
+      if (editableDiv !== null) {
+        editableDiv.innerHTML = '<p>保存してください。</p>'
+        await sleep(1_000)
+        const sendButton: HTMLButtonElement | null = document.querySelector(
+          'button[data-testid="send-button"]',
+        )
+        if (sendButton !== null) {
+          sendButton.click()
+        }
+        editableDiv.innerHTML = ''
+        sendResponse({ action: 'DONE' })
+      } else {
+        console.error('指定した要素が見つかりません。')
+      }
+    })()
+    // async functionを使う場合は、sendResponseを返す必要がある
+    return true
   }
 }
 

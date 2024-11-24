@@ -28,18 +28,17 @@ function onBeforeRequest(details: chrome.webRequest.WebRequestDetails) {
 }
 
 export type Action = { action: 'RETRY' } | { action: 'DONE' }
-function onCompleted(details: chrome.webRequest.WebRequestDetails) {
+async function onCompleted(details: chrome.webRequest.WebRequestDetails) {
   if (
     _registry.has(details.tabId) &&
     details.url === 'https://chatgpt.com/backend-api/conversation'
   ) {
-    chrome.tabs.sendMessage(details.tabId, { action: 'RETRY' }, (response: Action) => {
-      console.log('?????', response)
-      if (response.action === 'DONE') {
-        console.log('onComplete', details)
-        _registry.delete(details.tabId)
-      }
-    })
+    const _response = await chrome.tabs.sendMessage(details.tabId, { action: 'RETRY' })
+    if (_response.action === 'DONE') {
+      console.log('onComplete', details)
+      _registry.delete(details.tabId)
+    }
+    return
   }
 }
 

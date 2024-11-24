@@ -2,7 +2,7 @@ import { defineManifest } from '@crxjs/vite-plugin'
 import { description, version } from './package.json'
 
 export default defineManifest(async (_env) => ({
-  name: 'cg-extension',
+  name: process.env.NODE_ENV === 'development' ? 'cg-extension (dev)' : 'cg-extension',
   manifest_version: 3,
   version,
   description,

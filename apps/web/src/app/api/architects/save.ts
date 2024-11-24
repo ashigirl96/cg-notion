@@ -29,6 +29,7 @@ async function create({ emoji, name, overview, philosophy, works, externalLinks 
     ...formatProperties({ emoji, name }),
     children: formatChildren({ overview, philosophy, works, externalLinks }),
   })
+  // TODO: cover画像を追加
 }
 
 async function update(pageId: string, body: Body) {
@@ -36,6 +37,8 @@ async function update(pageId: string, body: Body) {
     page_id: pageId,
     ...formatProperties(body),
   })
+  // TODO: cover画像を更新
+
   // 既存のブロックを取得
   const existingBlocks = await notion.blocks.children.list({ block_id: pageId })
   // 既に概要がある場合は何もしない

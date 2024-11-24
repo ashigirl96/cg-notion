@@ -1,9 +1,9 @@
-import { BadRequest, InternalServerError, Ok } from '@/lib/api'
-import { env } from '@/lib/env'
-import { Logger } from '@/lib/logger'
-import { notion } from '@/lib/notion'
-import { parseRequest } from '@/lib/utils'
 import z from 'zod'
+import { BadRequest, InternalServerError, Ok } from '../../../lib/api'
+import { env } from '../../../lib/env'
+import { Logger } from '../../../lib/logger'
+import { notion } from '../../../lib/notion'
+import { parseRequest } from '../../../lib/utils'
 
 const BodySchema = z.object({
   name: z.string(),

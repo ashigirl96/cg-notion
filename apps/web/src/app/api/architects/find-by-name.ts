@@ -1,5 +1,5 @@
-import { env } from '@/lib/env'
-import { notion, toNotionURL } from '@/lib/notion'
+import { env } from '../../../lib/env'
+import { notion, toNotionURL } from '../../../lib/notion'
 
 export async function findByName(name: string) {
   const _response = await notion.databases.query({

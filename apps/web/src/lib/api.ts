@@ -1,5 +1,5 @@
-import type { Logger } from '@/lib/logger'
 import { NextResponse } from 'next/server'
+import type { Logger } from './logger'
 
 export const ApiStatus = {
   OK: 200,

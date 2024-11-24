@@ -1,10 +1,10 @@
-import { env } from '@/lib/env'
 import { Client } from '@notionhq/client'
 import type {
   CreatePageParameters,
   CreatePageResponse,
 } from '@notionhq/client/build/src/api-endpoints'
 import { type Result, ResultAsync } from 'neverthrow'
+import { env } from './env'
 
 type WithAuth<P> = P & {
   auth?: string

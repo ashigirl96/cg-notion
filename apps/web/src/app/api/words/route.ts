@@ -1,8 +1,8 @@
-import { save } from '@/app/api/words/save'
-import { BodySchema } from '@/app/api/words/schema'
-import { BadRequest, InternalServerError, Ok } from '@/lib/api'
-import { Logger } from '@/lib/logger'
-import { parseRequest } from '@/lib/utils'
+import { BadRequest, InternalServerError, Ok } from '../../../lib/api'
+import { Logger } from '../../../lib/logger'
+import { parseRequest } from '../../../lib/utils'
+import { save } from './save'
+import { BodySchema } from './schema'
 
 export async function POST(req: Request) {
   const logger = new Logger('POST /api/words')

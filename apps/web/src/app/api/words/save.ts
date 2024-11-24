@@ -1,6 +1,6 @@
-import type { Body } from '@/app/api/words/schema'
-import { env } from '@/lib/env'
-import { type EmojiRequest, notion } from '@/lib/notion'
+import { env } from '../../../lib/env'
+import { type EmojiRequest, notion } from '../../../lib/notion'
+import type { Body } from './schema'
 
 export async function save({ emoji, name, type, example, def, pronunciation }: Body) {
   return await notion.pages.create({

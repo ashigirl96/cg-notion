@@ -1,5 +1,3 @@
-import type { Body } from '@/app/api/architects/schema'
-import { type EmojiRequest, notion, toNotionURL } from '@/lib/notion'
 import {
   bulletedListItem,
   heading2,
@@ -7,6 +5,8 @@ import {
   paragraph,
 } from '@sota1235/notion-sdk-js-helper/dist/blockObjects'
 import { richText } from '@sota1235/notion-sdk-js-helper/dist/richTextObject'
+import { type EmojiRequest, notion, toNotionURL } from '../../../lib/notion'
+import type { Body } from './schema'
 
 export async function update(pageId: string, body: Body) {
   return await updatePageProperties(pageId, body)

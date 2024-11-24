@@ -1,11 +1,11 @@
-import { create } from '@/app/api/architects/create'
-import { findByName } from '@/app/api/architects/find-by-name'
-import { type Body, BodySchema } from '@/app/api/architects/schema'
-import { update } from '@/app/api/architects/update'
-import { BadRequest, InternalServerError, Ok } from '@/lib/api'
-import { Logger } from '@/lib/logger'
-import { parseRequest } from '@/lib/utils'
 import type { NextRequest } from 'next/server'
+import { BadRequest, InternalServerError, Ok } from '../../../lib/api'
+import { Logger } from '../../../lib/logger'
+import { parseRequest } from '../../../lib/utils'
+import { create } from './create'
+import { findByName } from './find-by-name'
+import { type Body, BodySchema } from './schema'
+import { update } from './update'
 
 export async function GET(req: NextRequest) {
   const logger = new Logger('GET /api/architects')

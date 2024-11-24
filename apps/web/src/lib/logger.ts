@@ -1,6 +1,6 @@
-import type { ApiStatus } from '@/lib/api'
 import pino from 'pino'
 import pretty from 'pino-pretty'
+import type { ApiStatus } from './api'
 
 const stream = pretty({
   colorize: true,

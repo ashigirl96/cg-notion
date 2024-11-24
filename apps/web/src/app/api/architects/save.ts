@@ -84,7 +84,7 @@ function formatChildren(body: Pick<Body, 'overview' | 'philosophy' | 'works' | '
   const images = overview.imageUrls.map((url) => column([embed(url, {})]))
   return [
     heading2('概要'),
-    columnList(images),
+    images.length >= 2 ? columnList(images) : null,
     ...overview.description.map((description) => bulletedListItem(description)),
     heading2('代表作'),
     ...works.map((_work) =>
@@ -100,5 +100,5 @@ function formatChildren(body: Pick<Body, 'overview' | 'philosophy' | 'works' | '
     ...philosophy.map((item) => bulletedListItem(item)),
     heading2('外部リンク'),
     ...externalLinks.map((link, _index) => numberedListItem(richText(link.title, {}, link.url))),
-  ]
+  ].filter((item) => item !== null)
 }

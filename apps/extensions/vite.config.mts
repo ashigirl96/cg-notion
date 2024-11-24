@@ -9,7 +9,14 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      "@": resolve(__dirname, "./"),
+      "@": resolve(__dirname, "./src"),
     },
   },
+  // build: {
+  //   rollupOptions: {
+  //     input: {
+  //       hello: resolve(__dirname, "./src/scripts/index.ts"),
+  //     },
+  //   },
+  // },
 });

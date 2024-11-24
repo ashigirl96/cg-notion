@@ -1,5 +1,3 @@
-// content_script.js
-
 // MutationObserverのコールバック関数
 function callback(mutationsList: MutationRecord[], _observer: MutationObserver) {
   for (const mutation of mutationsList) {

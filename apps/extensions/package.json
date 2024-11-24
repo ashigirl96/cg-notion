@@ -1,0 +1,20 @@
+{
+  "name": "extensions",
+  "private": true,
+  "version": "0.0.0",
+  "description": "cg-notion extensions",
+  "scripts": {
+    "dev": "vite --port 3033",
+    "build": "tsc && vite build",
+    "release": "npm run build && npm-build-zip --source dist --name release --name_only true"
+  },
+  "devDependencies": {
+    "@crxjs/vite-plugin": "2.0.0-beta.28",
+    "@types/chrome": "0.0.283",
+    "@types/node": "latest",
+    "npm-build-zip": "1.0.4",
+    "patch-package": "8.0.0",
+    "typescript": "5.7.2",
+    "vite": "5.4.11"
+  }
+}

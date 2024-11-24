@@ -1,7 +1,12 @@
 import { env } from '@/lib/env'
 import { notion, toNotionURL } from '@/lib/notion'
 
-export async function findByName(name: string) {
+export type FindByName = {
+  id: string
+  url: string
+  name: string
+}[]
+export async function findByName(name: string): Promise<FindByName> {
   const _response = await notion.databases.query({
     database_id: env.ARCHITECT_DATABASE_ID,
     filter: {

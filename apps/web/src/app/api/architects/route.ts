@@ -1,11 +1,10 @@
+import { save } from '@/app/api/architects/save'
 import { BadRequest, InternalServerError, Ok } from '@/lib/api'
 import { Logger } from '@/lib/logger'
 import { parseRequest } from '@/lib/utils'
 import type { NextRequest } from 'next/server'
-import { create } from './create'
 import { findByName } from './find-by-name'
-import { type Body, BodySchema } from './schema'
-import { update } from './update'
+import { BodySchema } from './schema'
 
 export async function GET(req: NextRequest) {
   const logger = new Logger('GET /api/architects')
@@ -22,17 +21,6 @@ export async function POST(req: Request) {
   const data = await parseRequest(req, BodySchema)
   if (!data.success) {
     return BadRequest(data.error.format(), logger)
-  }
-
-  async function save(data: Body) {
-    const architects = await findByName(data.name.jp)
-    if (architects.length === 0) {
-      return await create(data)
-    }
-    if (architects.length === 1) {
-      return await update(architects[0].id, data)
-    }
-    throw new Error(`Multiple architects found; ${JSON.stringify(architects, null, 2)}`)
   }
 
   return await save(data.data)

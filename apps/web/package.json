@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
+    "@types/bun": "^1.1.13",
     "@types/node": "latest",
     "@types/react": "^18",
     "@types/react-dom": "^18",

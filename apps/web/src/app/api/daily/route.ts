@@ -2,7 +2,7 @@ import { BadRequest, InternalServerError, Ok } from '@/lib/api'
 import { env } from '@/lib/env'
 import { Logger } from '@/lib/logger'
 import { notion } from '@/lib/notion'
-import { parseRequest } from '@/lib/utils'
+import { parseRequest, parseURL } from '@/lib/utils'
 import z from 'zod'
 
 const BodySchema = z.object({
@@ -16,6 +16,7 @@ export async function POST(req: Request) {
   }
   const { name } = data.data
   const isGoodDay = name.includes('良')
+  const urls = parseURL(name)
   return await notion.pages
     .create({
       parent: { database_id: env.DAILY_DATABASE_ID },
@@ -28,6 +29,9 @@ export async function POST(req: Request) {
               },
             },
           ],
+        },
+        URL: {
+          url: urls.length > 0 ? urls[0] : null,
         },
         Categories: {
           multi_select: [

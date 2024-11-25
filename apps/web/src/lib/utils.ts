@@ -13,5 +13,5 @@ export async function parseRequest<T extends z.ZodObject<any>>(req: Request, sch
 
 const urlPattern = /\b(https?|ftp|file):\/\/[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]/g
 export function parseURL(value: string) {
-  return value.match(urlPattern)
+  return value.match(urlPattern)?.map((url) => url) ?? []
 }

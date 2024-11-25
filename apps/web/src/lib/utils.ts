@@ -11,7 +11,8 @@ export async function parseRequest<T extends z.ZodObject<any>>(req: Request, sch
   return schema.safeParse(body) as z.SafeParseReturnType<z.output<T>, z.output<T>>
 }
 
-const urlPattern = /\b(https?|ftp|file):\/\/[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]/g
+export const urlPattern =
+  /\b(https?|ftp|file):\/\/[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]/g
 export function parseURL(value: string) {
   return value.match(urlPattern)?.map((url) => url) ?? []
 }

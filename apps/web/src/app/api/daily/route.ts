@@ -2,7 +2,7 @@ import { BadRequest, InternalServerError, Ok } from '@/lib/api'
 import { env } from '@/lib/env'
 import { Logger } from '@/lib/logger'
 import { notion } from '@/lib/notion'
-import { parseRequest, parseURL } from '@/lib/utils'
+import { parseRequest, parseURL, urlPattern } from '@/lib/utils'
 import z from 'zod'
 
 const BodySchema = z.object({
@@ -25,7 +25,7 @@ export async function POST(req: Request) {
           title: [
             {
               text: {
-                content: name,
+                content: name.replace(urlPattern, ''),
               },
             },
           ],

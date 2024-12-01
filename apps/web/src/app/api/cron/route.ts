@@ -1,12 +1,12 @@
-import { InternalServerError, Ok } from '@/lib/api'
+import { ApiStatus, InternalServerError, Ok } from '@/lib/api'
 import { env } from '@/lib/env'
 import { Logger } from '@/lib/logger'
 import { notion } from '@/lib/notion'
 import '@/lib/globals'
 
-async function job() {
+async function job(logger: Logger) {
   const inputResponse = await notion.databases.query({
-    database_id: env.DAILY_DATABASE_ID,
+    database_id: env.INPUT_DATABASE_ID,
     filter: {
       and: [
         {
@@ -36,6 +36,7 @@ async function job() {
     })
     // @ts-expect-error
     const categoryId = outputResponse.properties.category.relation.last().id
+    logger.info(categoryId, { status: ApiStatus.OK })
 
     await notion.pages.update({
       page_id: inputId,
@@ -50,7 +51,7 @@ async function job() {
 
 export async function GET() {
   const logger = new Logger('GET /api/cron')
-  return await job()
+  return await job(logger)
     .then(() => Ok({ message: 'OK' }, logger))
     .catch((error) => InternalServerError({ message: error }, logger))
 }

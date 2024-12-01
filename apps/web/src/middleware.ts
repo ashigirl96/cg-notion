@@ -4,7 +4,10 @@ import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
-  if (pathname === '/api/cron') {
+  if (
+    pathname === '/api/cron' &&
+    request.headers.get('Authorization') === `Bearer ${env.CRON_SECRET}`
+  ) {
     return NextResponse.next() // 通過せず、次の処理へ進む
   }
   const notionToken = request.headers.get('X-NOTION-TOKEN')

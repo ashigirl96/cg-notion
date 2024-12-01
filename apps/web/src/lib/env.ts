@@ -7,6 +7,7 @@ export const envSchema = z.object({
   WORD_DATABASE_ID: z.string(),
   INPUT_DATABASE_ID: z.string(),
   ARCHITECT_READ_WRITE_TOKEN: z.string(),
+  CRON_SECRET: z.string(),
 })
 
 export type Env = z.output<typeof envSchema>

@@ -24,6 +24,10 @@ async function job(logger: Logger) {
       ],
     },
   })
+  if (inputResponse.results.length === 0) {
+    logger.info({ message: 'No items to process!' }, { status: ApiStatus.OK })
+    return
+  }
 
   // 取得したアイテムの処理
   for (const inputResult of inputResponse.results) {

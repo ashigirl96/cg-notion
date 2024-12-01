@@ -7,6 +7,40 @@ servers:
   - url: https://cg-notion.vercel.app
     description: Production server
 paths:
+  /api/summarize:
+    get:
+      operationId: summarizeUrl
+      summary: Generate a summarization prompt for a URL.
+      description: This endpoint accepts a URL as a query parameter and returns a prompt for summarizing the content at the URL.
+      parameters:
+        - name: url
+          in: query
+          description: The URL of the content to summarize.
+          required: true
+          schema:
+            type: string
+            format: uri
+      responses:
+        '200':
+          description: A successful response containing the summarization prompt.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  prompt:
+                    type: string
+                    description: The generated summarization prompt.
+        '400':
+          description: Bad request due to invalid or missing URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message indicating the issue.
   /api/daily:
     post:
       operationId: createDailyEntry
@@ -33,7 +67,7 @@ paths:
         '401':
           description: Unauthorized - Missing or invalid `X-NOTION-TOKEN`.
       security:
-        - notionAuth: []
+        - notionAuth: [ ]
   /api/architects:
     post:
       operationId: createArchitect

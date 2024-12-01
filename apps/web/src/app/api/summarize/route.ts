@@ -13,5 +13,6 @@ export async function GET(req: NextRequest) {
   if (!result.success) {
     return BadRequest(result.error.format(), logger)
   }
-  return Ok({ prompt: result.data }, logger)
+  const { prompt, transcript } = result.data
+  return Ok({ prompt, transcript }, logger)
 }

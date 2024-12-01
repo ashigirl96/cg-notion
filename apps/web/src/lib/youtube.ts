@@ -55,7 +55,8 @@ export const transcriptSchema = z
     const videoId = new URLSearchParams(parsedUrl.search).get('v')!
     const result = (await _fetchTranscript(videoId)).join('')
 
-    return `
+    return {
+      prompt: `
 Based on the provided YouTube transcript, create a summary in the style of a scientific paper. Please include the following sections:
 
 Introduction: Provide the background and context of the video, highlighting key themes.
@@ -66,9 +67,11 @@ Discussion: Discuss the implications, limitations, or potential applications of 
 Ensure the summary is concise and clear, with each section corresponding to the structure of a scientific paper. Use appropriate terminology, and keep each paragraph between 100-150 words.
 
 ----
-${result}
+< YouTube Transcript >
 ----
 
 please reply in Japanese
-`
+`,
+      transcript: result,
+    }
   })

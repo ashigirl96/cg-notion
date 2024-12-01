@@ -27,7 +27,11 @@ paths:
             application/json:
               schema:
                 type: object
+
                 properties:
+                  transcript:
+                    type: string
+                    description: YouTube's automatic transcript of the video.
                   prompt:
                     type: string
                     description: The generated summarization prompt.

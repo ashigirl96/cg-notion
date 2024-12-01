@@ -3,8 +3,8 @@ import z from 'zod'
 import { Innertube } from 'youtubei.js/web'
 
 const youtube = await Innertube.create({
-  lang: 'en',
-  location: 'US',
+  lang: 'ja',
+  location: 'JP',
   retrieve_player: false,
 })
 

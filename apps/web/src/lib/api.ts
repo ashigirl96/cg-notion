@@ -34,7 +34,7 @@ export function InternalServerError<JsonBody extends object>(
   logger: Logger,
   init?: ResponseInit,
 ): NextResponse<JsonBody> {
-  logger.info(body, { status: ApiStatus.InternalServerError })
+  logger.error(body, { status: ApiStatus.InternalServerError })
   return NextResponse.json(body, {
     ...init,
     status: ApiStatus.InternalServerError,
@@ -46,7 +46,7 @@ export function BadRequest<JsonBody extends object>(
   logger: Logger,
   init?: ResponseInit,
 ): NextResponse<JsonBody> {
-  logger.info(body, { status: ApiStatus.BadRequest })
+  logger.error(body, { status: ApiStatus.BadRequest })
   return NextResponse.json(body, {
     ...init,
     status: ApiStatus.BadGateway,

@@ -1,8 +1,12 @@
 import { env } from '@/lib/env'
-import { NextResponse } from 'next/server'
+import { type MiddlewareConfig, NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
+  const pathname = request.nextUrl.pathname
+  if (pathname === '/api/cron') {
+    return NextResponse.next() // 通過せず、次の処理へ進む
+  }
   const notionToken = request.headers.get('X-NOTION-TOKEN')
   if (notionToken === null || notionToken !== env.NOTION_TOKEN) {
     return new NextResponse('Unauthorized: Invalid API Key', { status: 401 })
@@ -20,6 +24,6 @@ export function middleware(request: NextRequest) {
   return NextResponse.next()
 }
 
-export const config = {
+export const config: MiddlewareConfig = {
   matcher: '/api/:path*',
 }

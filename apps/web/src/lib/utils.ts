@@ -16,3 +16,7 @@ export const urlPattern =
 export function parseURL(value: string) {
   return value.match(urlPattern)?.map((url) => url) ?? []
 }
+
+export function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}

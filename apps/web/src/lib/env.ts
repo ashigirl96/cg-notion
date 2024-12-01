@@ -5,6 +5,7 @@ export const envSchema = z.object({
   DAILY_DATABASE_ID: z.string(),
   ARCHITECT_DATABASE_ID: z.string(),
   WORD_DATABASE_ID: z.string(),
+  INPUT_DATABASE_ID: z.string(),
   ARCHITECT_READ_WRITE_TOKEN: z.string(),
 })
 

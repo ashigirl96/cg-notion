@@ -56,11 +56,19 @@ export const transcriptSchema = z
     const result = (await _fetchTranscript(videoId)).join('')
 
     return `
-以下は、YoutubeのvideoId(${videoId}) の字幕の内容です。
-要約して、日本語でレスポンスしてください。
+Based on the provided YouTube transcript, create a summary in the style of a scientific paper. Please include the following sections:
+
+Introduction: Provide the background and context of the video, highlighting key themes.
+Objective: State the main purpose or research question addressed in the video.
+Methodology: Summarize the approach, techniques, or logical progression presented in the video.
+Results: Outline the main findings or conclusions derived from the video.
+Discussion: Discuss the implications, limitations, or potential applications of the content presented.
+Ensure the summary is concise and clear, with each section corresponding to the structure of a scientific paper. Use appropriate terminology, and keep each paragraph between 100-150 words.
 
 ----
 ${result}
 ----
+
+please reply in Japanese
 `
   })

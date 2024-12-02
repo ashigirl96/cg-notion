@@ -57,20 +57,12 @@ export const transcriptSchema = z
 
     return {
       prompt: `
-Based on the provided YouTube transcript, create a summary in the style of a scientific paper. Please include the following sections:
-
-Introduction: Provide the background and context of the video, highlighting key themes.
-Objective: State the main purpose or research question addressed in the video.
-Methodology: Summarize the approach, techniques, or logical progression presented in the video.
-Results: Outline the main findings or conclusions derived from the video.
-Discussion: Discuss the implications, limitations, or potential applications of the content presented.
-Ensure the summary is concise and clear, with each section corresponding to the structure of a scientific paper. Use appropriate terminology, and keep each paragraph between 100-150 words.
+以下のトランスクリプトを要約し、読者に役立つ記事を作成してください。
+記事には魅力的なタイトルを付け、導入、本論、結論の構成で書き、見出しや箇条書きを用いて情報を整理してください。必ず日本語で返しなさい。
 
 ----
 < YouTube Transcript >
 ----
-
-please reply in Japanese
 `,
       transcript: result,
     }

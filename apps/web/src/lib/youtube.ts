@@ -61,7 +61,7 @@ export const transcriptSchema = z
 記事には魅力的なタイトルを付け、導入、本論、結論の構成で書き、見出しや箇条書きを用いて情報を整理してください。必ず日本語で返しなさい。
 
 ----
-< YouTube Transcript >
+[YouTube Transcript]
 ----
 `,
       transcript: result,

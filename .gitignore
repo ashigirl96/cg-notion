@@ -40,3 +40,5 @@ apps/web/next-env.d.ts
 # Turborepo
 .turbo
 .env*.local
+
+cg-notion.iml

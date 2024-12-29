@@ -25,7 +25,6 @@ export async function POST(req: Request) {
 
   return await save(data.data)
     .then((response) => {
-      // @ts-expect-error
       return Ok({ url: response.url }, logger)
     })
     .catch((error) => {

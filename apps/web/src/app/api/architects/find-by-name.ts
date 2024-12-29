@@ -1,5 +1,5 @@
-import { env } from '@/lib/env'
-import { notion, toNotionURL } from '@/lib/notion'
+import { toNotionURL } from '@/lib/notion'
+import { databases } from 'generated'
 
 export type FindByName = {
   id: string
@@ -7,16 +7,10 @@ export type FindByName = {
   name: string
 }[]
 export async function findByName(name: string): Promise<FindByName> {
-  const _response = await notion.databases.query({
-    database_id: env.ARCHITECT_DATABASE_ID,
-    filter: {
-      property: 'Name',
-      title: {
-        contains: name,
-      },
-    },
+  const response = await databases.architect.findBy({
+    where: databases.architect.Name.contains(name),
   })
-  return _response.results
+  return response
     .map((result) => {
       return {
         id: result.id,

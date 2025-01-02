@@ -25,7 +25,7 @@ export async function POST(req: Request) {
 
   return await save(data.data)
     .then((response) => {
-      return Ok({ url: response.url }, logger)
+      return Ok({ url: response.map((x) => x.url) }, logger)
     })
     .catch((error) => {
       return InternalServerError({ message: `Failed to create a page ${error}` }, logger)

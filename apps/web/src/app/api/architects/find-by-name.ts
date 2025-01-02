@@ -7,17 +7,17 @@ export type FindByName = {
   name: string
 }[]
 export async function findByName(name: string): Promise<FindByName> {
-  const response = await databases.architect.findBy({
+  const pages = await databases.architect.findPagesBy({
     where: databases.architect.Name.contains(name),
   })
-  return response
-    .map((result) => {
-      return {
+  if (pages.isOk()) {
+    return pages.value
+      .map((result) => ({
         id: result.id,
         url: toNotionURL(result.id),
-        // @ts-ignore
-        name: result.properties.Name.title[0].text.content,
-      }
-    })
-    .filter((result): result is { id: string; url: string; name: string } => result !== undefined)
+        name: result.properties.Name,
+      }))
+      .filter((result) => result !== undefined)
+  }
+  return []
 }

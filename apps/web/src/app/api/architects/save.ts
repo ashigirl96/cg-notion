@@ -16,8 +16,11 @@ export async function save(data: Body) {
   const architects = await findByName(data.name.jp)
   const { emoji, properties } = formatProperties(data)
   return await databases.architect.savePage({
-    update: {
-      pageId: architects[0]?.id,
+    where: databases.architect.Name.contains(data.name.jp),
+    emoji,
+    properties,
+    children: formatChildren(data),
+    options: {
       isAppendChildren: async (client) => {
         if (architects.length === 0) {
           return false
@@ -31,9 +34,6 @@ export async function save(data: Body) {
         )
       },
     },
-    emoji,
-    properties,
-    children: formatChildren(data),
   })
 }
 

@@ -13,20 +13,17 @@ import { richText } from '@sota1235/notion-sdk-js-helper/dist/richTextObject'
 import { databases } from 'generated'
 
 export async function save(data: Body) {
-  const architects = await findByName(data.name.jp)
+  const _architects = await findByName(data.name.jp)
   const { emoji, properties } = formatProperties(data)
-  return await databases.architect.savePage({
+  return databases.architect.savePage({
     where: databases.architect.Name.contains(data.name.jp),
     emoji,
     properties,
     children: formatChildren(data),
     options: {
-      isAppendChildren: async (client) => {
-        if (architects.length === 0) {
-          return false
-        }
-        const pageId = architects[0].id
-        const existingBlocks = await client.blocks.children.list({ block_id: pageId })
+      isAppendChildren: async (client, pageId) => {
+        const existingBlocks = await client.blocks.children.list({ block_id: pageId, page_size: 1 })
+        // ## 概要 がない場合は追加する
         return !(
           existingBlocks.results.length > 0 &&
           'heading_2' in existingBlocks.results[0] &&

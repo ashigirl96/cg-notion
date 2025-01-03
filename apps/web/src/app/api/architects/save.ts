@@ -12,11 +12,12 @@ import { richText } from '@sota1235/notion-sdk-js-helper/dist/richTextObject'
 import { databases } from 'generated'
 
 export async function save(data: Body) {
-  const { emoji, properties } = formatProperties(data)
   return databases.architect.savePage({
     where: databases.architect.Name.contains(data.name.jp),
-    emoji,
-    properties,
+    emoji: data.emoji as EmojiRequest,
+    properties: {
+      Name: databases.architect.Name.fill(`${data.name.jp}(${data.name.en})`),
+    },
     children: formatChildren(data),
     options: {
       isAppendChildren: async (client, pageId) => {
@@ -30,26 +31,6 @@ export async function save(data: Body) {
       },
     },
   })
-}
-
-function formatProperties({ emoji, name }: Pick<Body, 'emoji' | 'name'>): {
-  emoji: EmojiRequest
-  properties: { Name: { title: { text: { content: string } }[] } }
-} {
-  return {
-    emoji: emoji as EmojiRequest,
-    properties: {
-      Name: {
-        title: [
-          {
-            text: {
-              content: `${name.jp}(${name.en})`,
-            },
-          },
-        ],
-      },
-    },
-  }
 }
 
 function formatChildren(body: Pick<Body, 'overview' | 'philosophy' | 'works' | 'externalLinks'>) {

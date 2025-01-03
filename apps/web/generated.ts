@@ -35,7 +35,6 @@ export class word extends n.AbstractDatabase<word> {
   pronunciation = new n.RichTextField('pronunciation')
   def = new n.RichTextField('def')
   Name = new n.TitleField('Name')
-  関連記事 = new n.RichTextField('関連記事')
 
   /** biome-ignore lint/complexity/noUselessConstructor: <explanation> */
   constructor(client: Client) {
@@ -59,14 +58,33 @@ export class input extends n.AbstractDatabase<input> {
   }
 }
 
+export class output extends n.AbstractDatabase<output> {
+  id = env.OUTPUT_DATABASE_ID
+  Date = new n.DateField('Date')
+  PBI = new n.RelationField('PBI')
+  SubItem = new n.RelationField('SubItem')
+  category = new n.RelationField('category')
+  inputs = new n.RelationField('inputs')
+  Name = new n.TitleField('Name')
+  mediaType = new n.SelectField('mediaType')
+  URL = new n.UrlField('URL')
+
+  /** biome-ignore lint/complexity/noUselessConstructor: <explanation> */
+  constructor(client: Client) {
+    super(client)
+  }
+}
+
 export class pbi extends n.AbstractDatabase<pbi> {
   id = env.PBI_DATABASE_ID
   DB_OUTPUT = new n.RelationField('DB_OUTPUT')
   zettelkansenEpic = new n.RelationField('zettelkansenEpic')
   Epic = new n.RelationField('Epic')
   DB_INPUT = new n.RelationField('DB_INPUT')
+  Owner = new n.PeopleField('Owner')
   Status = new n.StatusField('Status')
   Dates = new n.DateField('Dates')
+  Summary = new n.RichTextField('Summary')
 
   /** biome-ignore lint/complexity/noUselessConstructor: <explanation> */
   constructor(client: Client) {
@@ -80,5 +98,6 @@ export const databases = {
   architect: new architect(client),
   word: new word(client),
   input: new input(client),
+  output: new output(client),
   pbi: new pbi(client),
 }

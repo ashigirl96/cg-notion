@@ -7,6 +7,7 @@ export const config: NotionConfig = {
     architect: env.ARCHITECT_DATABASE_ID,
     word: env.WORD_DATABASE_ID,
     input: env.INPUT_DATABASE_ID,
+    output: env.OUTPUT_DATABASE_ID,
     pbi: env.PBI_DATABASE_ID,
   },
   apiKey: env.NOTION_TOKEN,

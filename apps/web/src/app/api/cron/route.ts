@@ -1,56 +1,26 @@
-import { ApiStatus, InternalServerError, Ok } from '@/lib/api'
-import { env } from '@/lib/env'
+import { InternalServerError, Ok } from '@/lib/api'
 import { Logger } from '@/lib/logger'
-import { notion } from '@/lib/notion'
 import '@/lib/globals'
+import { databases } from 'generated'
 
 async function job(logger: Logger) {
-  const inputResponse = await notion.databases.query({
-    database_id: env.INPUT_DATABASE_ID,
-    filter: {
-      and: [
-        {
-          property: 'category',
-          relation: {
-            is_empty: true,
-          },
-        },
-        {
-          property: 'outputs',
-          relation: {
-            is_not_empty: true,
-          },
-        },
-      ],
+  // NEW
+  await databases.input.chain({
+    where: {
+      and: [databases.input.category.isEmpty(), databases.input.outputs.isNotEmpty()],
     },
+    from: databases.input.outputs,
+    middle: databases.output.category,
+    to: databases.input.category,
   })
-  if (inputResponse.results.length === 0) {
-    logger.info({ message: 'No items to process!' }, { status: ApiStatus.OK })
-    return
-  }
-
-  // 取得したアイテムの処理
-  for (const inputResult of inputResponse.results) {
-    const inputId = inputResult.id
-    // @ts-expect-error
-    const outputId = inputResult.properties.outputs.relation.last().id
-
-    const outputResponse = await notion.pages.retrieve({
-      page_id: outputId,
-    })
-    // @ts-expect-error
-    const categoryId = outputResponse.properties.category.relation.last().id
-    logger.info(categoryId, { status: ApiStatus.OK })
-
-    await notion.pages.update({
-      page_id: inputId,
-      properties: {
-        category: {
-          relation: [{ id: categoryId }],
-        },
-      },
-    })
-  }
+  await databases.input.chain({
+    where: {
+      and: [databases.input.outputs.isNotEmpty(), databases.input.PBI.isEmpty()],
+    },
+    from: databases.input.outputs,
+    middle: databases.output.PBI,
+    to: databases.input.PBI,
+  })
 }
 
 export async function GET() {

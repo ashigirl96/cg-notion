@@ -1,4 +1,3 @@
-import { findByName } from '@/app/api/architects/find-by-name'
 import type { Body } from '@/app/api/architects/schema'
 import type { EmojiRequest } from '@/lib/notion'
 import {
@@ -13,7 +12,6 @@ import { richText } from '@sota1235/notion-sdk-js-helper/dist/richTextObject'
 import { databases } from 'generated'
 
 export async function save(data: Body) {
-  const _architects = await findByName(data.name.jp)
   const { emoji, properties } = formatProperties(data)
   return databases.architect.savePage({
     where: databases.architect.Name.contains(data.name.jp),

@@ -1,9 +1,10 @@
 import { save } from '@/app/api/architects/save'
 import { BadRequest, InternalServerError, Ok } from '@/lib/api'
 import { Logger } from '@/lib/logger'
+import { toNotionURL } from '@/lib/notion'
 import { parseRequest } from '@/lib/utils'
+import { databases } from 'generated'
 import type { NextRequest } from 'next/server'
-import { findByName } from './find-by-name'
 import { BodySchema } from './schema'
 
 export async function GET(req: NextRequest) {
@@ -12,7 +13,24 @@ export async function GET(req: NextRequest) {
   if (name === null) {
     return BadRequest({ message: 'Invalid query, requires `name`' }, logger)
   }
-  const results = await findByName(name)
+  const pages = await databases.architect.findPagesBy({
+    where: databases.architect.Name.contains(name),
+  })
+  const results = pages.match(
+    (pages) => {
+      return pages
+        .map((result) => ({
+          id: result.id,
+          url: toNotionURL(result.id),
+          name: result.properties.Name,
+        }))
+        .filter((result) => result !== undefined)
+    },
+    (error) => {
+      logger.error({ message: error }, { status: 500 })
+      return []
+    },
+  )
   return Ok(results, logger)
 }
 

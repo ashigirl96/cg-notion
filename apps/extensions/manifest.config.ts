@@ -9,12 +9,13 @@ export default defineManifest(async (_env) => ({
   content_scripts: [
     {
       matches: ['https://chatgpt.com/*'],
-      js: ['./src/scripts/index.ts'],
+      // js: ['./src/scripts/index.ts', './src/scripts/do-not-hallucination.ts'],
+      js: ['./src/scripts/do-not-hallucination.ts'],
     },
   ],
-  background: {
-    service_worker: './src/background/index.ts',
-  },
+  // background: {
+  //   service_worker: './src/background/index.ts',
+  // },
   omnibox: {
     keyword: 'cg',
   },

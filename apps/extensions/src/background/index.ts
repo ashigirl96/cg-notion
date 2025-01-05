@@ -1,15 +1,15 @@
 // import { type ChatGPTResponse, isRetryMessage } from '@/background/isRetryMessage'
-//
-// // Tabを管理するためのリスナー
-// function onInputEntered(text: string) {
-//   // ex: https://chatgpt.com/?q=hoge&hints=search&ref=ext
-//   const queryUrl = `https://chatgpt.com/?q=${encodeURIComponent(text)}&hints=search&ref=ext`
-//   chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
-//     console.log('tabs', tabs)
-//     // @ts-expect-error
-//     await chrome.tabs.update(tabs?.[0]?.id, { url: queryUrl })
-//   })
-// }
+
+// Tabを管理するためのリスナー
+function onInputEntered(text: string) {
+  // ex: https://chatgpt.com/?q=hoge&hints=search&ref=ext
+  const queryUrl = `https://chatgpt.com/?q=${encodeURIComponent(text)}&hints=search&ref=ext`
+  chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
+    console.log('tabs', tabs)
+    // @ts-expect-error
+    await chrome.tabs.update(tabs?.[0]?.id, { url: queryUrl })
+  })
+}
 //
 // // ChatGPTのリクエストを監視するリスナー
 // type TabId = number
@@ -43,19 +43,19 @@
 //   }
 // }
 //
-// // chrome.webRequest.onBeforeRequest.addListener()
-// function addListeners() {
-//   if (!chrome.omnibox.onInputEntered.hasListener(onInputEntered)) {
-//     chrome.omnibox.onInputEntered.addListener(onInputEntered)
-//   }
-//   if (!chrome.webRequest.onBeforeRequest.hasListener(onBeforeRequest)) {
-//     chrome.webRequest.onBeforeRequest.addListener(onBeforeRequest, { urls: ['<all_urls>'] }, [
-//       'requestBody',
-//     ])
-//   }
-//   if (!chrome.webRequest.onCompleted.hasListener(onCompleted)) {
-//     chrome.webRequest.onCompleted.addListener(onCompleted, { urls: ['<all_urls>'] })
-//   }
-// }
-//
-// addListeners()
+// chrome.webRequest.onBeforeRequest.addListener()
+function addListeners() {
+  if (!chrome.omnibox.onInputEntered.hasListener(onInputEntered)) {
+    chrome.omnibox.onInputEntered.addListener(onInputEntered)
+  }
+  // if (!chrome.webRequest.onBeforeRequest.hasListener(onBeforeRequest)) {
+  //   chrome.webRequest.onBeforeRequest.addListener(onBeforeRequest, { urls: ['<all_urls>'] }, [
+  //     'requestBody',
+  //   ])
+  // }
+  // if (!chrome.webRequest.onCompleted.hasListener(onCompleted)) {
+  //   chrome.webRequest.onCompleted.addListener(onCompleted, { urls: ['<all_urls>'] })
+  // }
+}
+
+addListeners()

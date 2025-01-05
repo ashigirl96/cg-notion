@@ -11,6 +11,12 @@ const isAlreadyArticleExist = () => {
 }
 
 function addMessage() {
+  if (window.location.href.includes('daily')) {
+    return false
+  }
+  if (isAlreadyArticleExist()) {
+    return false
+  }
   const editableDiv: HTMLDivElement | null = document.querySelector(
     'div[contenteditable="true"].ProseMirror',
   )
@@ -27,29 +33,38 @@ function addMessage() {
   pTag.innerHTML = `${MESSAGE}<br/><br/>`
   return true
 }
-
 /**
  * DOMの変化を監視するためのMutationObserverを設定します。
  * 目的の要素が追加された場合にcheckComposerBackgroundを呼び出します。
  */
 const setupMutationObserver = () => {
   if (mutationObserverInstance) {
-    console.log('既にMutationObserverが設定されています。')
     mutationObserverInstance.disconnect()
-  } else {
-    console.log('まだないよ。MutationObserverを設定します。')
   }
 
   mutationObserverInstance = new MutationObserver((_mutations, _obs) => {
-    if (isAlreadyArticleExist()) {
-      return
-    }
     addMessage()
+    for (const mutation of _mutations) {
+      if (mutation.type === 'childList') {
+        for (const node of mutation.addedNodes) {
+          if (node instanceof HTMLElement) {
+            const button = node.querySelector('button')
+            if (button?.textContent === '確認する') {
+              console.log('button', button)
+              setTimeout(() => {
+                console.log("🔥 '確認する'ボタンをクリックしました。")
+                button.click()
+              }, 1000) // 1秒後にクリック
+            }
+          }
+        }
+      }
+    }
   })
 
   mutationObserverInstance.observe(document.body, {
     childList: true,
-    subtree: false,
+    subtree: true,
     attributes: false,
     characterData: false,
     characterDataOldValue: false,

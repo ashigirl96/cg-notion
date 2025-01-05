@@ -13,9 +13,9 @@ export default defineManifest(async (_env) => ({
       js: ['./src/scripts/do-not-hallucination.ts'],
     },
   ],
-  // background: {
-  //   service_worker: './src/background/index.ts',
-  // },
+  background: {
+    service_worker: './src/background/index.ts',
+  },
   omnibox: {
     keyword: 'cg',
   },
